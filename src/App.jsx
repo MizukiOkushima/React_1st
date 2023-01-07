@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import "./App.css";
+import CodeContext from "./main";
 
 function App() {
   // let count = 0;
@@ -7,6 +8,9 @@ function App() {
   // useStateというを使うHooksを使う。上記でimportしておくこと。
   // useState(0) 0で初期化
   const [count, setCount] = useState(0);
+
+  // Contextを使用する useContextというHooksを使用する
+  const codeInfo = useContext(CodeContext);
 
   const handleClick = () => {
     // count++;
@@ -23,13 +27,21 @@ function App() {
   // [count]とするとcountのデータが更新するときに発火される。
   useEffect(() => {
     console.log("Hello Hooks");
+
+    // useEffectの中でset関数を使うと無限に読み込んでしまうため注意
+    // setCount(count + 1);
   }, [count]);
 
   return (
     <div className="App">
-      <h1>UseState</h1>
+      <h1>useState, useEffect</h1>
       <button onClick={handleClick}>＋</button>
       <p>{count}</p>
+
+      <hr />
+      <h1>useContext</h1>
+      <p>{codeInfo.name}</p>
+      <p>{codeInfo.age}</p>
     </div>
   );
 }
