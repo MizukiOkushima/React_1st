@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import "./App.css";
 import CodeContext from "./main";
 
@@ -11,6 +11,9 @@ function App() {
 
   // Contextを使用する useContextというHooksを使用する
   const codeInfo = useContext(CodeContext);
+
+  // useRefというHooksを使用する。Reference 参照するという意味。タグの詳細情報を参照できる。
+  const ref = useRef();
 
   const handleClick = () => {
     // count++;
@@ -32,6 +35,13 @@ function App() {
     // setCount(count + 1);
   }, [count]);
 
+  const handleRef = () => {
+    // inputタグの入力情報の詳細を参照する。
+    console.log(ref.current.value);
+    // inputタグの高さの詳細を参照する。
+    console.log(ref.current.offsetHeight);
+  };
+
   return (
     <div className="App">
       <h1>useState, useEffect</h1>
@@ -42,6 +52,11 @@ function App() {
       <h1>useContext</h1>
       <p>{codeInfo.name}</p>
       <p>{codeInfo.age}</p>
+
+      <hr />
+      <h1>useRef</h1>
+      <input type="text" ref={ref} />
+      <button onClick={handleRef}>UseRef</button>
     </div>
   );
 }
