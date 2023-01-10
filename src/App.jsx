@@ -1,6 +1,18 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useReducer, useRef, useState } from "react";
 import "./App.css";
 import CodeContext from "./main";
+
+const reducer = (state, action) => {
+  // 加算と減算のアクション
+  switch (action.type) {
+    case "increment":
+      return state + 1;
+    case "decrement":
+      return state - 1;
+    default:
+      return state;
+  }
+};
 
 function App() {
   // let count = 0;
@@ -14,6 +26,11 @@ function App() {
 
   // useRefというHooksを使用する。Reference 参照するという意味。タグの詳細情報を参照できる。
   const ref = useRef();
+
+  // useReducer 初期値0
+  // state 更新されたstate
+  // dispatch reducerに対しての通知
+  const [state, dispatch] = useReducer(reducer, 0);
 
   const handleClick = () => {
     // count++;
@@ -57,6 +74,13 @@ function App() {
       <h1>useRef</h1>
       <input type="text" ref={ref} />
       <button onClick={handleRef}>UseRef</button>
+
+      <hr />
+      <h1>useReducer</h1>
+      <p>カウント：{state}</p>
+      <button onClick={() => dispatch({type: "increment"})}>＋</button>
+      <button onClick={() => dispatch({type: "decrement"})}>―</button>
+
     </div>
   );
 }
