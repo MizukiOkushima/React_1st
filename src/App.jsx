@@ -2,6 +2,7 @@ import { useCallback, useContext, useEffect, useMemo, useReducer, useRef, useSta
 import "./App.css";
 import CodeContext from "./main";
 import SomeChild from "./SomeChild";
+import useLocalStorage from "./useLocalStorage";
 
 const reducer = (state, action) => {
   // 加算と減算のアクション
@@ -102,8 +103,12 @@ function App() {
   // useCallback()でラッピング
   // 第２引数に関連数引数を指定すること counterの状態が変更されたときだけuseCallback関数が読み込まれる
   const showCount = useCallback(() => {
-    alert('これは重い処理です');
+    alert("これは重い処理です");
   }, [counter]);
+
+  // useLocalStorage カスタムフック ローカルストレージに保存する
+  // 第１引数：キー 第２引数：バリュー
+  const [age, setAge] = useLocalStorage("age", 33);
 
   return (
     <div className="App">
@@ -138,6 +143,11 @@ function App() {
       <hr />
       <h1>useCallBack</h1>
       <SomeChild showCount={showCount}></SomeChild>
+
+      <hr />
+      <h1>カスタムフック</h1>
+      <p>{age}</p>
+      <button onClick={() => setAge(80)}>年齢をセット</button>
     </div>
   );
 }
