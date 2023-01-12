@@ -1,4 +1,4 @@
-import { useContext, useEffect, useReducer, useRef, useState } from "react";
+import { useContext, useEffect, useMemo, useReducer, useRef, useState } from "react";
 import "./App.css";
 import CodeContext from "./main";
 
@@ -59,6 +59,36 @@ function App() {
     console.log(ref.current.offsetHeight);
   };
 
+  // useMemo メモ化することができる（パソコンのメモリに保存する）
+  // useStateを使って下準備してみる
+  const [count01, setCount01] = useState(0);
+  const [count02, setCount02] = useState(0);
+
+  // const square = () => {
+  //   let i = 0;
+  //   // 200万回繰り返したらインプリメントする重い処理
+  //   // 重い処理を実装しているため、各ボタンを押した時の全体の差分をチェックした時にここの処理が実行されてしまう。
+  //   while (i < 200000) {
+  //     i++;
+  //   }
+  //   console.log("クリックされました");
+  //   return count02 * count02;
+  // };
+
+  // 上記squareをuseMemo()でラッピングすると使用可能
+  // 第２引数[count02] 依存関係を設定 count02が更新されたときだけ重い処理を走らせる
+  // useMemoでメモリに保存されたデータをそのまま返す
+  const square = useMemo(() => {
+    let i = 0;
+    // 200万回繰り返したらインプリメントする重い処理
+    // 重い処理を実装しているため、各ボタンを押した時の全体の差分をチェックした時にここの処理が実行されてしまう。
+    while (i < 2000000) {
+      i++;
+    }
+    console.log("クリックされました");
+    return count02 * count02;
+  },[count02]);
+
   return (
     <div className="App">
       <h1>useState, useEffect</h1>
@@ -81,6 +111,13 @@ function App() {
       <button onClick={() => dispatch({type: "increment"})}>＋</button>
       <button onClick={() => dispatch({type: "decrement"})}>―</button>
 
+      <hr />
+      <h1>useMemo</h1>
+      <div>カウント１：{count01}</div>
+      <div>カウント２：{count02}</div>
+      <div>結果：{square}</div>
+      <button onClick={()=> setCount01(count01 +1)}>＋</button>
+      <button onClick={()=> setCount02(count02 +1)}>＋</button>
     </div>
   );
 }
