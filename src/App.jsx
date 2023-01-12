@@ -1,6 +1,7 @@
-import { useContext, useEffect, useMemo, useReducer, useRef, useState } from "react";
+import { useCallback, useContext, useEffect, useMemo, useReducer, useRef, useState } from "react";
 import "./App.css";
 import CodeContext from "./main";
+import SomeChild from "./SomeChild";
 
 const reducer = (state, action) => {
   // 加算と減算のアクション
@@ -87,7 +88,22 @@ function App() {
     }
     console.log("クリックされました");
     return count02 * count02;
-  },[count02]);
+  }, [count02]);
+
+  // useCallBack useMemoと違いコールバック関数自体をメモリに保存する
+  // useStateで初期化0
+  const [counter, setCounter] = useState(0);
+
+  // // コールバック関数出ない場合を考えてみる
+  // const showCount = () => {
+  //   alert('これは重い処理です');
+  // }
+
+  // useCallback()でラッピング
+  // 第２引数に関連数引数を指定すること counterの状態が変更されたときだけuseCallback関数が読み込まれる
+  const showCount = useCallback(() => {
+    alert('これは重い処理です');
+  }, [counter]);
 
   return (
     <div className="App">
@@ -108,16 +124,20 @@ function App() {
       <hr />
       <h1>useReducer</h1>
       <p>カウント：{state}</p>
-      <button onClick={() => dispatch({type: "increment"})}>＋</button>
-      <button onClick={() => dispatch({type: "decrement"})}>―</button>
+      <button onClick={() => dispatch({ type: "increment" })}>＋</button>
+      <button onClick={() => dispatch({ type: "decrement" })}>―</button>
 
       <hr />
       <h1>useMemo</h1>
       <div>カウント１：{count01}</div>
       <div>カウント２：{count02}</div>
       <div>結果：{square}</div>
-      <button onClick={()=> setCount01(count01 +1)}>＋</button>
-      <button onClick={()=> setCount02(count02 +1)}>＋</button>
+      <button onClick={() => setCount01(count01 + 1)}>＋</button>
+      <button onClick={() => setCount02(count02 + 1)}>＋</button>
+
+      <hr />
+      <h1>useCallBack</h1>
+      <SomeChild showCount={showCount}></SomeChild>
     </div>
   );
 }
