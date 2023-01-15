@@ -1,4 +1,7 @@
 # React_1st
+## 概要
+Reacで使用されるHooksを試してみる。<br>
+useState, useEffect, useContext, useRef, useReducer, useMemo, useCallback, customHook<br>
 
 ## 環境構築
 
